@@ -4,28 +4,28 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 24px 16px;
+  padding: 24px 16px 40px;
 }
 
 /* ── Header ── */
 .header {
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 28px;
 }
 
 .title {
   font-family: 'Pacifico', cursive;
-  font-size: clamp(28px, 5vw, 48px);
+  font-size: clamp(26px, 4vw, 44px);
   background: linear-gradient(135deg, #f093fb, #f5576c, #fda085);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .subtitle {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 14px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 13px;
 }
 
 /* ── Shared panel ── */
@@ -36,13 +36,32 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* ── Setup view ── */
-.setupContainer {
+/* ══════════════════════════════════════════
+   IDLE VIEW — side-by-side layout
+   ══════════════════════════════════════════ */
+
+.idleLayout {
   display: flex;
-  flex-direction: column;
   gap: 24px;
   width: 100%;
-  max-width: 700px;
+  max-width: 1100px;
+  align-items: flex-start;
+}
+
+/* Left column: camera + start button */
+.idleCameraCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  flex: 1 1 560px;
+  min-width: 0;
+}
+
+/* Right column: selectors */
+.idleSelectorCol {
+  flex: 0 0 320px;
+  min-width: 0;
 }
 
 .selectorPanel {
@@ -50,125 +69,59 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  max-height: calc(100vh - 180px);
+  overflow-y: auto;
 }
 
-.previewPanel {
-  composes: panel;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-}
-
-.previewLabel {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 13px;
-}
-
-.previewStrip {
-  padding: 12px 10px;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  width: 160px;
-  transition: width 0.25s ease;
-}
-
-.previewStripWide {
-  width: 240px;
-}
-
-.previewDecor {
-  text-align: center;
-  font-size: 14px;
-  letter-spacing: 3px;
-}
-
-/* Shared preview slot */
-.previewSlot {
-  border-radius: 3px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
+/* ── Live camera wrapper (idle) ── */
+.liveCameraWrapper {
+  position: relative;
+  border-radius: 18px;
   overflow: hidden;
+  width: 100%;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-/* Strip slot (default) */
-.previewSlot:not(.previewSlotSquare):not(.previewSlotTall):not(.previewSlotWide) {
-  height: 52px;
+/* ── Frame corner decorations ── */
+.corner {
+  position: absolute;
+  font-size: 22px;
+  z-index: 6;
+  pointer-events: none;
+  line-height: 1;
+  transition: color 0.3s;
+  text-shadow: 0 0 8px currentColor;
 }
 
-/* Square slot (grid-2x2, featured small) */
-.previewSlotSquare {
-  aspect-ratio: 1;
-}
+.cornerTL { top: 8px;  left: 10px;  }
+.cornerTR { top: 8px;  right: 10px; }
+.cornerBL { bottom: 8px; left: 10px;  }
+.cornerBR { bottom: 8px; right: 10px; }
 
-/* Tall slot (duo) */
-.previewSlotTall {
-  aspect-ratio: 3 / 4;
-}
-
-/* Wide slot (featured big, single) */
-.previewSlotWide {
-  aspect-ratio: 16 / 9;
-}
-
-/* Grid 2×2 preview */
-.previewGrid2x2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 5px;
-}
-
-/* Featured preview */
-.previewFeatured {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.previewGrid3 {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 5px;
-}
-
-/* Duo preview */
-.previewDuo {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 5px;
-}
-
-.previewBrand {
-  text-align: center;
-  font-size: 10px;
-  font-family: 'Pacifico', cursive;
-  opacity: 0.8;
-}
-
+/* ── Start button ── */
 .startButton {
-  padding: 16px 48px;
+  padding: 14px 40px;
   background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #fda085 100%);
   color: #fff;
   border: none;
   border-radius: 32px;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 800;
-  box-shadow: 0 8px 32px rgba(240, 147, 251, 0.4);
+  box-shadow: 0 8px 28px rgba(240, 147, 251, 0.4);
   transition: transform 0.2s, box-shadow 0.2s;
-  align-self: center;
+  white-space: nowrap;
 }
 
 .startButton:hover {
   transform: scale(1.05);
-  box-shadow: 0 12px 40px rgba(240, 147, 251, 0.6);
+  box-shadow: 0 12px 36px rgba(240, 147, 251, 0.6);
 }
 
-/* ── Shooting view ── */
+/* ══════════════════════════════════════════
+   SHOOTING VIEW
+   ══════════════════════════════════════════ */
+
 .shootingContainer {
   display: flex;
   flex-direction: column;
@@ -178,6 +131,26 @@
   max-width: 700px;
 }
 
+/* Inner column inside shootingContainer */
+.shootingCameraCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+/* Camera wrapper during shooting — same corner decoration support */
+.cameraWrapper {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 640px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* ── Progress bar ── */
 .progressBar {
   display: flex;
   gap: 8px;
@@ -189,7 +162,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  font-size: 13px;
   color: #fff;
   transition: all 0.3s;
 }
@@ -200,16 +173,17 @@
 }
 
 .progressDotActive {
-  width: 24px;
-  height: 24px;
-  background: rgba(255, 255, 255, 0.3);
-  border: 2px solid rgba(255, 255, 255, 0.5);
+  width: 26px;
+  height: 26px;
+  background: rgba(255, 255, 255, 0.25);
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  animation: pulse-ring 1.2s ease-in-out infinite;
 }
 
 .progressDotPending {
-  width: 24px;
-  height: 24px;
-  background: rgba(255, 255, 255, 0.1);
+  width: 22px;
+  height: 22px;
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .progressLabel {
@@ -218,23 +192,20 @@
   margin-left: 8px;
 }
 
-.cameraWrapper {
-  border-radius: 20px;
-  overflow: hidden;
-  width: 100%;
-  max-width: 640px;
-}
-
+/* ── Thumbnails ── */
 .thumbnailRow {
   display: flex;
   gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .thumbnail {
-  width: 64px;
-  height: 48px;
-  border-radius: 6px;
+  width: 72px;
+  height: 54px;
+  border-radius: 8px;
   overflow: hidden;
+  transition: border-color 0.3s;
 }
 
 .thumbnailImage {
@@ -243,17 +214,27 @@
   object-fit: cover;
 }
 
+/* ── Cancel button ── */
 .cancelButton {
-  padding: 8px 20px;
+  padding: 8px 22px;
   background: transparent;
-  color: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 20px;
   cursor: pointer;
   font-size: 13px;
+  transition: all 0.2s;
 }
 
-/* ── Result view ── */
+.cancelButton:hover {
+  color: rgba(255, 255, 255, 0.8);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+/* ══════════════════════════════════════════
+   RESULT VIEW
+   ══════════════════════════════════════════ */
+
 .resultContainer {
   display: flex;
   flex-direction: column;
@@ -289,4 +270,28 @@
   color: rgba(255, 255, 255, 0.2);
   font-size: 12px;
   text-align: center;
+}
+
+/* ── Animations ── */
+@keyframes pulse-ring {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.4); }
+  50%       { box-shadow: 0 0 0 6px rgba(255,255,255,0); }
+}
+
+/* ── Responsive: stack on small screens ── */
+@media (max-width: 820px) {
+  .idleLayout {
+    flex-direction: column;
+    align-items: center;
+    max-width: 560px;
+  }
+
+  .idleSelectorCol {
+    flex: none;
+    width: 100%;
+  }
+
+  .selectorPanel {
+    max-height: none;
+  }
 }
