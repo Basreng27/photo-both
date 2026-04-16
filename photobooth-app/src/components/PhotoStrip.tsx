@@ -1,5 +1,6 @@
 import type { Frame, Background, GridLayout } from '../types';
 import { getFrameDecor } from './FrameDecorations';
+import NewspaperLayout from './NewspaperLayout';
 import styles from './PhotoStrip.module.css';
 import '../styles/frameDecorations.css';
 
@@ -222,27 +223,32 @@ export default function PhotoStrip({
 }: PhotoStripProps) {
   const isWide = layout.id === 'grid-2x2' || layout.id === 'grid-2-1' || layout.id === 'grid-1-3' || layout.id === 'single';
 
+  const stripContent = frame.id === 'newspaper' ? (
+    <NewspaperLayout
+      photoCount={layout.photoCount}
+      capturedPhotos={photos}
+      background={background}
+      isCapturing={false}
+      countdown={null}
+      onCapture={() => {}}
+    />
+  ) : (
+    <div
+      className={`${styles.strip} ${isWide ? styles.stripWide : ''} ${frame.stripClass ?? ''}`}
+      style={{
+        background: frame.stripBg,
+        boxShadow: `0 8px 32px rgba(0,0,0,0.5), 0 0 0 2px ${frame.borderColor}`,
+      }}
+    >
+      <StripDecoration frame={frame} />
+      <PhotoGrid photos={photos} frame={frame} background={background} layoutId={layout.id} />
+      <StripFooter frame={frame} />
+    </div>
+  );
+
   return (
     <div className={styles.container}>
-      <div
-        className={`${styles.strip} ${isWide ? styles.stripWide : ''} ${frame.stripClass ?? ''}`}
-        style={{
-          background: frame.stripBg,
-          boxShadow: `0 8px 32px rgba(0,0,0,0.5), 0 0 0 2px ${frame.borderColor}`,
-        }}
-      >
-        <StripDecoration frame={frame} />
-
-        <PhotoGrid
-          photos={photos}
-          frame={frame}
-          background={background}
-          layoutId={layout.id}
-        />
-
-        <StripFooter frame={frame} />
-      </div>
-
+      {stripContent}
       <div className={styles.actions}>
         <button
           className={styles.downloadButton}

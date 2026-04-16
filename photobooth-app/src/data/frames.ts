@@ -59,14 +59,14 @@ export const frames: Frame[] = [
   // ── 5. Newspaper ─────────────────────────────────────────────────────────
   {
     id: 'newspaper',
-    name: 'Koran',
+    name: 'Koran Jadul',
     emoji: '📰',
-    borderColor: '#2c2c2c',
-    borderStyle: '8px solid #2c2c2c',
-    bgColor: '#f5f0e8',
-    textColor: '#1a1a1a',
+    borderColor: '#2a1f0e',
+    borderStyle: '6px double #2a1f0e',
+    bgColor: '#f0e6d0',
+    textColor: '#2a1f0e',
     cornerDecor: '■',
-    stripBg: '#f5f0e8',
+    stripBg: '#f0e6d0',
     stripClass: 'frameNewspaper',
   },
 

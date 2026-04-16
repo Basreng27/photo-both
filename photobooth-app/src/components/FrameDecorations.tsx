@@ -39,33 +39,176 @@ function reg(id: string, Header: React.FC<{ frame: Frame }>, Footer: React.FC<{ 
 export function getFrameDecor(frameId: string): FrameDecorComponents {
   return registry[frameId] ?? { Header: DefaultHeader, Footer: DefaultFooter };
 }
-// ── Newspaper ─────────────────────────────────────────────────────────────────
+// ── Newspaper (Vintage / Jadul) ───────────────────────────────────────────────
+
+const NP = {
+  sepia:    '#c8b89a',
+  dark:     '#2a1f0e',
+  mid:      '#5c4a2a',
+  light:    '#f0e6d0',
+  ink:      '#1a1208',
+  rule:     '#8b7355',
+};
 
 function NewspaperHeader({ frame: _frame }: { frame: Frame }) {
-  const today = new Date();
-  const dateStr = today.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  const today   = new Date();
+  const dayName = today.toLocaleDateString('en-US', { weekday: 'long' }).toUpperCase();
+  const dateStr = today.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase();
+  const vol     = Math.floor((today.getTime() - new Date('1900-01-01').getTime()) / 86400000);
+  const issue   = (today.getMonth() + 1) * 31 + today.getDate();
+
   return (
-    <div style={{ background: '#1a1a1a', color: '#f5f0e8', padding: '6px 8px', fontFamily: 'Georgia, serif' }}>
-      <div style={{ fontSize: 7, letterSpacing: 2, textAlign: 'center', opacity: 0.7, borderBottom: '1px solid #555', paddingBottom: 3, marginBottom: 3 }}>
-        ★ EDISI KHUSUS ★
+    <div style={{
+      background: NP.light,
+      fontFamily: 'Georgia, "Times New Roman", serif',
+      padding: '0 6px 4px',
+      borderBottom: '3px double ' + NP.dark,
+    }}>
+      {/* Top rule */}
+      <div style={{ borderTop: '2px solid ' + NP.dark, borderBottom: '1px solid ' + NP.dark, padding: '1px 0', marginBottom: 2 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 6, color: NP.mid, letterSpacing: 0.5 }}>
+          <span>VOL. {vol} . . . No. {issue}</span>
+          <span>{dayName}, {dateStr}</span>
+          <span>PRICE: ONE CENT</span>
+        </div>
       </div>
-      <div style={{ fontSize: 18, fontWeight: 900, textAlign: 'center', letterSpacing: -0.5, lineHeight: 1 }}>
-        PHOTO BOOTH
+
+      {/* Masthead */}
+      <div style={{ textAlign: 'center', lineHeight: 1, marginBottom: 1 }}>
+        {/* Decorative rule above title */}
+        <svg width="100%" height="6" viewBox="0 0 220 6" style={{ display: 'block' }}>
+          <line x1="0"   y1="3" x2="220" y2="3" stroke={NP.dark} strokeWidth="0.5"/>
+          <line x1="0"   y1="1" x2="220" y2="1" stroke={NP.dark} strokeWidth="0.5"/>
+          <line x1="0"   y1="5" x2="220" y2="5" stroke={NP.dark} strokeWidth="0.5"/>
+          {/* Corner ornaments */}
+          <text x="4"   y="5" fontSize="5" fill={NP.dark} fontFamily="Georgia,serif">✦</text>
+          <text x="210" y="5" fontSize="5" fill={NP.dark} fontFamily="Georgia,serif">✦</text>
+        </svg>
+
+        {/* Newspaper name */}
+        <div style={{
+          fontSize: 22,
+          fontWeight: 900,
+          color: NP.ink,
+          letterSpacing: -0.5,
+          fontFamily: '"Times New Roman", Georgia, serif',
+          textShadow: '1px 1px 0 ' + NP.sepia,
+          lineHeight: 1.1,
+        }}>
+          The Daily PhotoBooth
+        </div>
+
+        {/* Subtitle / tagline */}
+        <div style={{ fontSize: 6.5, color: NP.mid, letterSpacing: 2, fontStyle: 'italic', marginTop: 1 }}>
+          "All The News That's Fit To Print"
+        </div>
+
+        {/* Decorative rule below title */}
+        <svg width="100%" height="5" viewBox="0 0 220 5" style={{ display: 'block', marginTop: 2 }}>
+          <line x1="0"   y1="1" x2="220" y2="1" stroke={NP.dark} strokeWidth="1.5"/>
+          <line x1="0"   y1="4" x2="220" y2="4" stroke={NP.dark} strokeWidth="0.5"/>
+        </svg>
       </div>
-      <div style={{ fontSize: 7, textAlign: 'center', opacity: 0.6, marginTop: 2, borderTop: '1px solid #555', paddingTop: 3 }}>
-        {dateStr}
+
+      {/* Section header */}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        fontSize: 7,
+        color: NP.mid,
+        borderBottom: '1px solid ' + NP.rule,
+        paddingBottom: 2,
+        marginTop: 1,
+      }}>
+        <span style={{ fontStyle: 'italic' }}>★ SPECIAL EDITION ★</span>
+        <span style={{ fontWeight: 700, letterSpacing: 1, fontSize: 8, color: NP.dark }}>PHOTO GAZETTE</span>
+        <span style={{ fontStyle: 'italic' }}>LATE CITY FINAL</span>
       </div>
     </div>
   );
 }
 
 function NewspaperFooter({ frame: _frame }: { frame: Frame }) {
+  const today = new Date();
+  const yr    = today.getFullYear();
+
   return (
-    <div style={{ background: '#1a1a1a', color: '#f5f0e8', padding: '5px 8px', fontFamily: 'Georgia, serif' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 7, opacity: 0.6, borderTop: '1px solid #555', paddingTop: 3 }}>
-        <span>© PhotoBooth Press</span>
-        <span>Harga: GRATIS</span>
-        <span>Edisi Terbatas</span>
+    <div style={{
+      background: NP.light,
+      fontFamily: 'Georgia, "Times New Roman", serif',
+      padding: '3px 6px 4px',
+      borderTop: '3px double ' + NP.dark,
+    }}>
+      {/* Top rule */}
+      <svg width="100%" height="4" viewBox="0 0 220 4" style={{ display: 'block', marginBottom: 2 }}>
+        <line x1="0" y1="1" x2="220" y2="1" stroke={NP.dark} strokeWidth="1"/>
+        <line x1="0" y1="3" x2="220" y2="3" stroke={NP.dark} strokeWidth="0.4"/>
+      </svg>
+
+      {/* Fake ad / classifieds row */}
+      <div style={{
+        display: 'flex',
+        gap: 4,
+        marginBottom: 3,
+        borderBottom: '1px solid ' + NP.rule,
+        paddingBottom: 3,
+      }}>
+        {/* Ad 1 */}
+        <div style={{
+          flex: 1,
+          border: '1px solid ' + NP.rule,
+          padding: '2px 3px',
+          fontSize: 5.5,
+          color: NP.dark,
+          textAlign: 'center',
+          lineHeight: 1.4,
+        }}>
+          <div style={{ fontWeight: 900, fontSize: 7, letterSpacing: 0.5 }}>PHOTO STUDIO</div>
+          <div style={{ fontStyle: 'italic' }}>Portraits &amp; Memories</div>
+          <div>Open Daily · Est. 1899</div>
+        </div>
+
+        {/* Center ornament */}
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: 10,
+          color: NP.mid,
+          padding: '0 2px',
+        }}>
+          ❧
+        </div>
+
+        {/* Ad 2 */}
+        <div style={{
+          flex: 1,
+          border: '1px solid ' + NP.rule,
+          padding: '2px 3px',
+          fontSize: 5.5,
+          color: NP.dark,
+          textAlign: 'center',
+          lineHeight: 1.4,
+        }}>
+          <div style={{ fontWeight: 900, fontSize: 7, letterSpacing: 0.5 }}>MEMORIES</div>
+          <div style={{ fontStyle: 'italic' }}>Preserved Forever</div>
+          <div>Fine Quality Prints</div>
+        </div>
+      </div>
+
+      {/* Copyright line */}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        fontSize: 5.5,
+        color: NP.mid,
+        letterSpacing: 0.3,
+      }}>
+        <span>© {yr} THE DAILY PHOTOBOOTH</span>
+        <span>✦ ✦ ✦</span>
+        <span>ALL RIGHTS RESERVED</span>
       </div>
     </div>
   );

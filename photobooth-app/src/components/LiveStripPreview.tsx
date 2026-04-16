@@ -1,6 +1,7 @@
 import type { Frame, Background, GridLayout } from '../types';
 import Camera from './Camera';
 import { getFrameDecor } from './FrameDecorations';
+import NewspaperLayout from './NewspaperLayout';
 import styles from './LiveStripPreview.module.css';
 import '../styles/frameDecorations.css';
 
@@ -209,11 +210,21 @@ export default function LiveStripPreview({
   countdown,
   onCapture,
 }: LiveStripPreviewProps) {
-  // During idle, capturedCount = 0 so slot 0 is always the live camera.
-  // During shooting this component is replaced by the shooting view,
-  // but we keep the prop for reuse.
-  const capturedCount = 0;
+  // Newspaper frame gets its own full-page layout
+  if (frame.id === 'newspaper') {
+    return (
+      <NewspaperLayout
+        photoCount={layout.photoCount}
+        capturedPhotos={[]}
+        background={background}
+        isCapturing={isCapturing}
+        countdown={countdown}
+        onCapture={onCapture}
+      />
+    );
+  }
 
+  const capturedCount = 0;
   const isWide =
     layout.id === 'grid-2x2' ||
     layout.id === 'grid-2-1' ||
