@@ -10,7 +10,8 @@ import {
   RESULT_TRANSITION_DELAY_MS,
   SESSION_START_DELAY_MS,
 } from './constants';
-import Camera from './components/Camera';
+import LiveStripPreview from './components/LiveStripPreview';
+import ShootingStripPreview from './components/ShootingStripPreview';
 import FrameSelector from './components/FrameSelector';
 import BackgroundSelector from './components/BackgroundSelector';
 import LayoutSelector from './components/LayoutSelector';
@@ -19,27 +20,7 @@ import styles from './App.module.css';
 
 type AppState = 'idle' | 'shooting' | 'result';
 
-// ── Shared sub-components ─────────────────────────────────────────────────────
-
-/** Corner decorations that sit inside the camera wrapper. */
-function FrameCorners({ frame }: { frame: Frame }) {
-  return (
-    <>
-      <span className={`${styles.corner} ${styles.cornerTL}`} style={{ color: frame.borderColor }}>
-        {frame.cornerDecor}
-      </span>
-      <span className={`${styles.corner} ${styles.cornerTR}`} style={{ color: frame.borderColor }}>
-        {frame.cornerDecor}
-      </span>
-      <span className={`${styles.corner} ${styles.cornerBL}`} style={{ color: frame.borderColor }}>
-        {frame.cornerDecor}
-      </span>
-      <span className={`${styles.corner} ${styles.cornerBR}`} style={{ color: frame.borderColor }}>
-        {frame.cornerDecor}
-      </span>
-    </>
-  );
-}
+// ── Progress bar ──────────────────────────────────────────────────────────────
 
 function ProgressBar({
   total,
@@ -81,25 +62,6 @@ function ProgressBar({
         );
       })}
       <span className={styles.progressLabel}>{label}</span>
-    </div>
-  );
-}
-
-function ThumbnailRow({ photos, frame }: { photos: string[]; frame: Frame }) {
-  return (
-    <div className={styles.thumbnailRow}>
-      {photos.map((photo, i) => (
-        <div
-          key={i}
-          className={styles.thumbnail}
-          style={{
-            border: `2px solid ${frame.borderColor}`,
-            boxShadow: `0 0 8px ${frame.borderColor}66`,
-          }}
-        >
-          <img src={photo} alt={`Thumbnail ${i + 1}`} className={styles.thumbnailImage} />
-        </div>
-      ))}
     </div>
   );
 }
@@ -181,9 +143,6 @@ export default function App() {
     setAppState('idle');
   }, []);
 
-  const isShooting = appState === 'shooting';
-  const showCamera = appState !== 'result';
-
   const capturedCount = photos.length;
   const progressLabel =
     capturedCount < selectedLayout.photoCount
@@ -199,76 +158,65 @@ export default function App() {
         </p>
       </header>
 
-      {/* ── Camera is always mounted when not in result state ──
-          This prevents the stream from restarting between idle → shooting.
-          Layout switches between side-by-side (idle) and centered (shooting). */}
-      {showCamera && (
-        <div className={isShooting ? styles.shootingContainer : styles.idleLayout}>
-
-          {/* ── Camera column ── */}
-          <div className={isShooting ? styles.shootingCameraCol : styles.idleCameraCol}>
-
-            {/* Progress bar — only during shooting */}
-            {isShooting && (
-              <ProgressBar
-                total={selectedLayout.photoCount}
-                doneCount={capturedCount}
-                frame={selectedFrame}
-                label={progressLabel}
-              />
-            )}
-
-            {/* Camera with live frame overlay */}
-            <div
-              className={isShooting ? styles.cameraWrapper : styles.liveCameraWrapper}
-              style={{
-                border: `5px solid ${selectedFrame.borderColor}`,
-                boxShadow: `0 0 32px ${selectedFrame.borderColor}55, 0 8px 32px rgba(0,0,0,0.5)`,
-              }}
-            >
-              <FrameCorners frame={selectedFrame} />
-              <Camera
-                selectedBackground={selectedBackground}
-                isCapturing={isCapturing}
-                countdown={countdown}
-                onCapture={handleCapture}
-              />
-            </div>
-
-            {/* Thumbnails — only during shooting */}
-            {isShooting && photos.length > 0 && (
-              <ThumbnailRow photos={photos} frame={selectedFrame} />
-            )}
-
-            {/* Action buttons */}
-            {isShooting ? (
-              <button className={styles.cancelButton} onClick={handleRetake}>
-                ✕ Batal
-              </button>
-            ) : (
-              <button className={styles.startButton} onClick={startSession}>
-                📸 Mulai Foto! &nbsp;·&nbsp; {selectedLayout.photoCount} foto
-              </button>
-            )}
+      {/* ── IDLE: camera live inside the actual strip frame ── */}
+      {appState === 'idle' && (
+        <div className={styles.idleLayout}>
+          {/* Left: live strip preview */}
+          <div className={styles.idleCameraCol}>
+            <LiveStripPreview
+              frame={selectedFrame}
+              background={selectedBackground}
+              layout={selectedLayout}
+              isCapturing={false}
+              countdown={null}
+              onCapture={() => {}}
+            />
+            <button className={styles.startButton} onClick={startSession}>
+              📸 Mulai Foto! &nbsp;·&nbsp; {selectedLayout.photoCount} foto
+            </button>
           </div>
 
-          {/* ── Selector column — only in idle ── */}
-          {!isShooting && (
-            <div className={styles.idleSelectorCol}>
-              <div className={styles.selectorPanel}>
-                <LayoutSelector selectedLayout={selectedLayout} onSelect={setSelectedLayout} />
-                <FrameSelector selectedFrame={selectedFrame} onSelect={setSelectedFrame} />
-                <BackgroundSelector
-                  selectedBackground={selectedBackground}
-                  onSelect={setSelectedBackground}
-                />
-              </div>
+          {/* Right: selectors */}
+          <div className={styles.idleSelectorCol}>
+            <div className={styles.selectorPanel}>
+              <LayoutSelector selectedLayout={selectedLayout} onSelect={setSelectedLayout} />
+              <FrameSelector selectedFrame={selectedFrame} onSelect={setSelectedFrame} />
+              <BackgroundSelector
+                selectedBackground={selectedBackground}
+                onSelect={setSelectedBackground}
+              />
             </div>
-          )}
+          </div>
         </div>
       )}
 
-      {/* ── Result view ── */}
+      {/* ── SHOOTING: strip with captured photos + live camera in next slot ── */}
+      {appState === 'shooting' && (
+        <div className={styles.shootingContainer}>
+          <ProgressBar
+            total={selectedLayout.photoCount}
+            doneCount={capturedCount}
+            frame={selectedFrame}
+            label={progressLabel}
+          />
+
+          <ShootingStripPreview
+            frame={selectedFrame}
+            background={selectedBackground}
+            layout={selectedLayout}
+            capturedPhotos={photos}
+            isCapturing={isCapturing}
+            countdown={countdown}
+            onCapture={handleCapture}
+          />
+
+          <button className={styles.cancelButton} onClick={handleRetake}>
+            ✕ Batal
+          </button>
+        </div>
+      )}
+
+      {/* ── RESULT ── */}
       {appState === 'result' && (
         <ResultView
           photos={photos}

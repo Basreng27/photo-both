@@ -1,0 +1,129 @@
+/* ── Strip wrapper ── */
+.strip {
+  padding: 14px 12px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 260px;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+.stripWide {
+  width: 380px;
+}
+
+/* ── Header / footer ── */
+.header {
+  text-align: center;
+  font-size: 18px;
+  letter-spacing: 4px;
+  transition: color 0.3s;
+}
+
+.footer {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 2px;
+}
+
+.footerDecor {
+  font-size: 16px;
+  letter-spacing: 4px;
+  transition: color 0.3s;
+}
+
+.footerBrand {
+  font-size: 11px;
+  font-weight: 700;
+  opacity: 0.85;
+  font-family: 'Pacifico', cursive;
+  transition: color 0.3s;
+}
+
+.footerDate {
+  font-size: 10px;
+  opacity: 0.55;
+  transition: color 0.3s;
+}
+
+/* ── Shared slot ── */
+.slot {
+  position: relative;
+  border-radius: 5px;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  flex-shrink: 0;
+  transition: border-color 0.3s;
+}
+
+/* Live camera slot — no aspect-ratio override, camera fills it */
+.slotLive {
+  aspect-ratio: unset;
+}
+
+/* Background overlay inside slot */
+.slotBgOverlay {
+  position: absolute;
+  inset: 0;
+  opacity: 0.3;
+  z-index: 1;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+/* Placeholder number badge */
+.slotNumber {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.25);
+  font-family: 'Nunito', sans-serif;
+}
+
+/* ── Grid 2×2 ── */
+.grid2x2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.cellSquare {
+  aspect-ratio: 1;
+}
+
+/* ── Featured ── */
+.featuredLayout {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cellWide {
+  aspect-ratio: 16 / 9;
+}
+
+.featuredRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+}
+
+/* ── Duo ── */
+.duoLayout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.cellTall {
+  aspect-ratio: 3 / 4;
+}

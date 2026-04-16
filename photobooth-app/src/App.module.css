@@ -42,20 +42,20 @@
 
 .idleLayout {
   display: flex;
-  gap: 24px;
+  gap: 32px;
   width: 100%;
   max-width: 1100px;
   align-items: flex-start;
+  justify-content: center;
 }
 
-/* Left column: camera + start button */
+/* Left column: live strip preview + start button */
 .idleCameraCol {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
-  flex: 1 1 560px;
-  min-width: 0;
+  gap: 20px;
+  flex: 0 0 auto;
 }
 
 /* Right column: selectors */
@@ -65,38 +65,16 @@
 }
 
 .selectorPanel {
-  composes: panel;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   flex-direction: column;
   gap: 20px;
   max-height: calc(100vh - 180px);
   overflow-y: auto;
 }
-
-/* ── Live camera wrapper (idle) ── */
-.liveCameraWrapper {
-  position: relative;
-  border-radius: 18px;
-  overflow: hidden;
-  width: 100%;
-  transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-/* ── Frame corner decorations ── */
-.corner {
-  position: absolute;
-  font-size: 22px;
-  z-index: 6;
-  pointer-events: none;
-  line-height: 1;
-  transition: color 0.3s;
-  text-shadow: 0 0 8px currentColor;
-}
-
-.cornerTL { top: 8px;  left: 10px;  }
-.cornerTR { top: 8px;  right: 10px; }
-.cornerBL { bottom: 8px; left: 10px;  }
-.cornerBR { bottom: 8px; right: 10px; }
 
 /* ── Start button ── */
 .startButton {
@@ -129,25 +107,6 @@
   gap: 20px;
   width: 100%;
   max-width: 700px;
-}
-
-/* Inner column inside shootingContainer */
-.shootingCameraCol {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  width: 100%;
-}
-
-/* Camera wrapper during shooting — same corner decoration support */
-.cameraWrapper {
-  position: relative;
-  border-radius: 18px;
-  overflow: hidden;
-  width: 100%;
-  max-width: 640px;
-  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 /* ── Progress bar ── */
@@ -192,28 +151,6 @@
   margin-left: 8px;
 }
 
-/* ── Thumbnails ── */
-.thumbnailRow {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.thumbnail {
-  width: 72px;
-  height: 54px;
-  border-radius: 8px;
-  overflow: hidden;
-  transition: border-color 0.3s;
-}
-
-.thumbnailImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 /* ── Cancel button ── */
 .cancelButton {
   padding: 8px 22px;
@@ -245,8 +182,10 @@
 }
 
 .resultPanel {
-  composes: panel;
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 20px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   text-align: center;
   width: 100%;
 }
@@ -274,8 +213,8 @@
 
 /* ── Animations ── */
 @keyframes pulse-ring {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.4); }
-  50%       { box-shadow: 0 0 0 6px rgba(255,255,255,0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+  50%       { box-shadow: 0 0 0 6px rgba(255, 255, 255, 0); }
 }
 
 /* ── Responsive: stack on small screens ── */
@@ -283,7 +222,7 @@
   .idleLayout {
     flex-direction: column;
     align-items: center;
-    max-width: 560px;
+    max-width: 420px;
   }
 
   .idleSelectorCol {
