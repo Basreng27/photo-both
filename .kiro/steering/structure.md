@@ -4,6 +4,8 @@
 photobooth-app/
 ├── src/
 │   ├── components/
+│   │   ├── LayoutSelector.tsx        # Grid layout picker with SVG diagrams
+│   │   ├── LayoutSelector.module.css
 │   │   ├── Camera.tsx                # Webcam feed + countdown overlay + capture logic
 │   │   ├── Camera.module.css
 │   │   ├── FrameSelector.tsx         # Frame picker UI
@@ -13,7 +15,8 @@ photobooth-app/
 │   │   └── PhotoStrip.module.css
 │   ├── data/
 │   │   ├── frames.ts                 # Frame definitions (colors, styles, decorations)
-│   │   └── backgrounds.ts            # Background definitions (CSS gradients)
+│   │   ├── backgrounds.ts            # Background definitions (CSS gradients)
+│   │   └── layouts.ts                # Grid layout definitions (photoCount, aspectRatio)
 │   ├── hooks/
 │   │   ├── useCountdown.ts           # Countdown timer + capture trigger signal
 │   │   └── useCamera.ts              # Webcam access, mirror state, frame capture

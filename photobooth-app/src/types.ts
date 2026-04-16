@@ -18,3 +18,17 @@ export interface Background {
   emoji: string;
   style: React.CSSProperties;
 }
+
+/**
+ * Describes how photos are arranged in the final output.
+ * photoCount: how many photos to capture for this layout.
+ * aspectRatio: the output canvas aspect ratio (width / height).
+ */
+export interface GridLayout {
+  id: string;
+  name: string;
+  description: string;
+  emoji: string;
+  photoCount: number;
+  aspectRatio: number;
+}
