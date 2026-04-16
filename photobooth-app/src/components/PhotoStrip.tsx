@@ -1,5 +1,7 @@
 import type { Frame, Background, GridLayout } from '../types';
+import { getFrameDecor } from './FrameDecorations';
 import styles from './PhotoStrip.module.css';
+import '../styles/frameDecorations.css';
 
 interface PhotoStripProps {
   photos: string[];
@@ -13,30 +15,13 @@ interface PhotoStripProps {
 // ── Shared sub-components ─────────────────────────────────────────────────────
 
 function StripDecoration({ frame }: { frame: Frame }) {
-  return (
-    <div className={styles.decoration} style={{ color: frame.textColor }}>
-      {frame.cornerDecor} {frame.cornerDecor} {frame.cornerDecor}
-    </div>
-  );
+  const { Header } = getFrameDecor(frame.id);
+  return <Header frame={frame} />;
 }
 
 function StripFooter({ frame }: { frame: Frame }) {
-  const dateStr = new Date().toLocaleDateString('id-ID', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-  });
-  return (
-    <div className={styles.footer}>
-      <StripDecoration frame={frame} />
-      <div className={styles.footerBrand} style={{ color: frame.textColor }}>
-        ✨ PhotoBooth ✨
-      </div>
-      <div className={styles.footerDate} style={{ color: frame.textColor }}>
-        {dateStr}
-      </div>
-    </div>
-  );
+  const { Footer } = getFrameDecor(frame.id);
+  return <Footer frame={frame} />;
 }
 
 function PhotoSlot({
@@ -240,7 +225,7 @@ export default function PhotoStrip({
   return (
     <div className={styles.container}>
       <div
-        className={`${styles.strip} ${isWide ? styles.stripWide : ''}`}
+        className={`${styles.strip} ${isWide ? styles.stripWide : ''} ${frame.stripClass ?? ''}`}
         style={{
           background: frame.stripBg,
           boxShadow: `0 8px 32px rgba(0,0,0,0.5), 0 0 0 2px ${frame.borderColor}`,

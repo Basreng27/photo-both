@@ -10,6 +10,11 @@ export interface Frame {
   textColor: string;
   cornerDecor: string;
   stripBg: string;
+  /**
+   * Optional CSS class name applied to the strip wrapper.
+   * Used by rich frames to inject background patterns / textures.
+   */
+  stripClass?: string;
 }
 
 export interface Background {
@@ -19,11 +24,6 @@ export interface Background {
   style: React.CSSProperties;
 }
 
-/**
- * Describes how photos are arranged in the final output.
- * photoCount: how many photos to capture for this layout.
- * aspectRatio: the output canvas aspect ratio (width / height).
- */
 export interface GridLayout {
   id: string;
   name: string;

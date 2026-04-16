@@ -1,6 +1,8 @@
 import type { Frame, Background, GridLayout } from '../types';
 import Camera from './Camera';
+import { getFrameDecor } from './FrameDecorations';
 import styles from './LiveStripPreview.module.css';
+import '../styles/frameDecorations.css';
 
 interface LiveStripPreviewProps {
   frame: Frame;
@@ -15,32 +17,13 @@ interface LiveStripPreviewProps {
 // ── Strip header / footer ─────────────────────────────────────────────────────
 
 function StripHeader({ frame }: { frame: Frame }) {
-  return (
-    <div className={styles.header} style={{ color: frame.textColor }}>
-      {frame.cornerDecor} {frame.cornerDecor} {frame.cornerDecor}
-    </div>
-  );
+  const { Header } = getFrameDecor(frame.id);
+  return <Header frame={frame} />;
 }
 
 function StripFooter({ frame }: { frame: Frame }) {
-  const dateStr = new Date().toLocaleDateString('id-ID', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-  });
-  return (
-    <div className={styles.footer}>
-      <div className={styles.footerDecor} style={{ color: frame.textColor }}>
-        {frame.cornerDecor} {frame.cornerDecor} {frame.cornerDecor}
-      </div>
-      <div className={styles.footerBrand} style={{ color: frame.textColor }}>
-        ✨ PhotoBooth ✨
-      </div>
-      <div className={styles.footerDate} style={{ color: frame.textColor }}>
-        {dateStr}
-      </div>
-    </div>
-  );
+  const { Footer } = getFrameDecor(frame.id);
+  return <Footer frame={frame} />;
 }
 
 // ── Placeholder slot (for slots that aren't the live camera) ──────────────────
@@ -239,7 +222,7 @@ export default function LiveStripPreview({
 
   return (
     <div
-      className={`${styles.strip} ${isWide ? styles.stripWide : ''}`}
+      className={`${styles.strip} ${isWide ? styles.stripWide : ''} ${frame.stripClass ?? ''}`}
       style={{
         background: frame.stripBg,
         boxShadow: `0 8px 40px rgba(0,0,0,0.6), 0 0 0 3px ${frame.borderColor}`,
