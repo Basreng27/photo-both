@@ -1,0 +1,114 @@
+.wrapper {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.backgroundOverlay {
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.video {
+  width: 100%;
+  max-width: 640px;
+  display: block;
+  border-radius: 16px;
+}
+
+.videoMirrored {
+  transform: scaleX(-1);
+}
+
+.countdownOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.countdownNumber {
+  font-size: 120px;
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+  font-family: 'Pacifico', cursive;
+  animation: pulse 1s ease-in-out;
+}
+
+.mirrorButton {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  font-size: 18px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hiddenCanvas {
+  display: none;
+}
+
+/* Error state */
+.errorWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  background: #1a1a2e;
+  border-radius: 16px;
+  color: #fff;
+  gap: 16px;
+  padding: 24px;
+  text-align: center;
+}
+
+.errorIcon {
+  font-size: 48px;
+}
+
+.errorMessage {
+  font-size: 16px;
+  color: #ff6b6b;
+}
+
+.retryButton {
+  padding: 10px 24px;
+  background: #e94560;
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

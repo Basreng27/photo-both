@@ -1,0 +1,127 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.strip {
+  padding: 16px 12px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 220px;
+  position: relative;
+}
+
+.decoration {
+  text-align: center;
+  font-size: 18px;
+  letter-spacing: 4px;
+  margin-bottom: 4px;
+}
+
+.photoSlot {
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+}
+
+.backgroundOverlay {
+  position: absolute;
+  inset: 0;
+  opacity: 0.25;
+  z-index: 1;
+  mix-blend-mode: overlay;
+}
+
+.photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.photoBadge {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  z-index: 2;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.footerBrand {
+  font-size: 11px;
+  font-weight: 700;
+  opacity: 0.8;
+  font-family: 'Pacifico', cursive;
+}
+
+.footerDate {
+  font-size: 10px;
+  opacity: 0.6;
+}
+
+/* Action buttons */
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.downloadButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 800;
+  transition: transform 0.2s;
+}
+
+.downloadButton:hover {
+  transform: scale(1.05);
+}
+
+.retakeButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 24px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 800;
+  transition: all 0.2s;
+}
+
+.retakeButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
